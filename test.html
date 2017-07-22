@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css" />
+    <script language="JavaScript" src="js/jquery-2.2.4.min.js"></script>
+    <script language="javascript" src="js/jquery.dataTables.js"></script>
+    <script language="javascript" style="js/waterfall.js"></script>
+</head>
+<body>
+<table id="example" class="display" cellspacing="0" width="100%">
+<thead>
+<tr>
+    <th>Name</th>
+    <th>Position</th>
+    <th>Office</th>
+    <th>Age</th>
+    <th>Start date</th>
+    <th>Salary</th>
+</tr>
+</thead>
+</table>
+<div style="text-align: center"><button id="addRow" style="margin: auto">点击加载更多</button></div>
+
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable( {"paging":   false,
+                "ordering": false,
+                "info":     false,
+            "ajax": "data/source.txt"
+        });
+        var counter = 1;
+        var t = $('#example').DataTable();
+        $('#addRow').on( 'click', function () {
+//            counter++;
+//            t.row.add( [
+//                counter +'.1',
+//                counter +'.2',
+//                counter +'.3',
+//                counter +'.4',
+//                counter +'.5',
+//                counter + '.6'
+//            ] ).draw( false );
+//            var htmlobj=$.ajax({url:"data/source.txt",async:false});
+//            var data = JSON.parse(htmlobj.responseText).data;
+////            data.each(
+////                    function(index, Element){
+////                        alert(Element[1]);
+////                    }
+////            );
+//            $.each(data,function(index,value){
+////                console.log(index);
+////                console.log(value[0]);
+////                console.log(value[1]);
+//                t.row.add( [
+//                    value[0],
+//                    value[1],
+//                    value[2],
+//                    value[3],
+//                    value[4],
+//                    value[5]
+//            ] ).draw( false );
+//            });
+            addRows();
+        });
+
+        $(window).scroll(function () {
+            //$(window).scrollTop()这个方法是当前滚动条滚动的距离
+            //$(window).height()获取当前窗体的高度
+            //$(document).height()获取当前文档的高度
+            var bot = 30; //bot是底部距离的高度
+            if ((bot + $(window).scrollTop()) >= ($(document).height() - $(window).height())) {
+                //当底部基本距离+滚动的高度〉=文档的高度-窗体的高度时；
+                //我们需要去异步加载数据了
+              //  $.getJSON("url", { page: "2" }, function (str) { alert(str); });
+               addRows();
+            }
+        });
+
+        function addRows()
+        {
+            var htmlobj=$.ajax({url:"data/source.txt",async:false});
+            var data = JSON.parse(htmlobj.responseText).data;
+//            data.each(
+//                    function(index, Element){
+//                        alert(Element[1]);
+//                    }
+//            );
+            $.each(data,function(index,value){
+//                console.log(index);
+//                console.log(value[0]);
+//                console.log(value[1]);
+                t.row.add( [
+                    value[0],
+                    value[1],
+                    value[2],
+                    value[3],
+                    value[4],
+                    value[5]
+                ] ).draw( false );
+            });
+        }
+
+
+    } );
+</script>
+</body>
+</html>
